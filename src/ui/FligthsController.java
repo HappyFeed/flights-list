@@ -1,6 +1,6 @@
 package ui;
 
-import java.util.Random;
+import java.util.Comparator;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,6 +13,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
 import javafx.stage.StageStyle;
 import model.Flight;
+import model.FlightComparator;
+import model.FlightDestinyComparator;
+import model.FlightGateComparator;
 import model.ScreenFlights;
 
 public class FligthsController {
@@ -116,7 +119,7 @@ public class FligthsController {
     @FXML
     void orderByAirline(ActionEvent event) {
     	long timeInit=System.currentTimeMillis();
-    	fligths.sortByAirline();
+    	bubbleSort();
     	clearData();
     	showTable();
     	long timeFinal=System.currentTimeMillis()-timeInit;
@@ -127,11 +130,166 @@ public class FligthsController {
     void orderByDate(ActionEvent event) {
 
     }
-
-    @FXML
+	public void bubbleSort() {
+		if(firstFlight != null) {
+			
+			boolean changed = true;
+			while(changed) {
+				Flight currentNode = firstFlight;
+				changed = false;
+				//System.out.println("== NEW ITERATION A ==");
+				while(currentNode.getNextFlight() != null) {
+					Flight nextNode = currentNode.getNextFlight();
+					//System.out.println(currentNode+" ? "+nextNode);
+					if(currentNode.compareTo(nextNode)>0) {
+						if(currentNode.getPreviousFlight()!=null) {
+							currentNode.getPreviousFlight().setNextFlight(nextNode);
+						}
+						if(nextNode.getNextFlight()!=null) {
+							nextNode.getNextFlight().setPreviousFlight(currentNode);
+						}
+						
+						currentNode.setNextFlight(nextNode.getNextFlight());
+						nextNode.setPreviousFlight(currentNode.getPreviousFlight());
+						currentNode.setPreviousFlight(nextNode);
+						nextNode.setNextFlight(currentNode);
+						
+						
+						if(currentNode==firstFlight) {
+							firstFlight = nextNode;
+						}
+						
+						changed = true;
+						
+					}else{
+						currentNode = currentNode.getNextFlight();
+					}
+				}				
+			}
+		}
+	}
+	public void bubbleSortFlight() {
+		if(firstFlight != null) {
+			
+			boolean changed = true;
+			while(changed) {
+				Flight currentNode = firstFlight;
+				changed = false;
+				//System.out.println("== NEW ITERATION A ==");
+				while(currentNode.getNextFlight() != null) {
+					Flight nextNode = currentNode.getNextFlight();
+					//System.out.println(currentNode+" ? "+nextNode);
+					Comparator<Flight> flightComparator = new FlightComparator();
+					if(flightComparator.compare(currentNode,nextNode)>0) {
+						if(currentNode.getPreviousFlight()!=null) {
+							currentNode.getPreviousFlight().setNextFlight(nextNode);
+						}
+						if(nextNode.getNextFlight()!=null) {
+							nextNode.getNextFlight().setPreviousFlight(currentNode);
+						}
+						
+						currentNode.setNextFlight(nextNode.getNextFlight());
+						nextNode.setPreviousFlight(currentNode.getPreviousFlight());
+						currentNode.setPreviousFlight(nextNode);
+						nextNode.setNextFlight(currentNode);
+						
+						
+						if(currentNode==firstFlight) {
+							firstFlight = nextNode;
+						}
+						
+						changed = true;
+						
+					}else{
+						currentNode = currentNode.getNextFlight();
+					}
+				}				
+			}
+		}
+	}
+	public void bubbleSortDestiny() {
+		if(firstFlight != null) {
+			
+			boolean changed = true;
+			while(changed) {
+				Flight currentNode = firstFlight;
+				changed = false;
+				//System.out.println("== NEW ITERATION A ==");
+				while(currentNode.getNextFlight() != null) {
+					Flight nextNode = currentNode.getNextFlight();
+					//System.out.println(currentNode+" ? "+nextNode);
+					Comparator<Flight> flightDestinyComparator = new FlightDestinyComparator();
+					if(flightDestinyComparator.compare(currentNode,nextNode)>0) {
+						if(currentNode.getPreviousFlight()!=null) {
+							currentNode.getPreviousFlight().setNextFlight(nextNode);
+						}
+						if(nextNode.getNextFlight()!=null) {
+							nextNode.getNextFlight().setPreviousFlight(currentNode);
+						}
+						
+						currentNode.setNextFlight(nextNode.getNextFlight());
+						nextNode.setPreviousFlight(currentNode.getPreviousFlight());
+						currentNode.setPreviousFlight(nextNode);
+						nextNode.setNextFlight(currentNode);
+						
+						
+						if(currentNode==firstFlight) {
+							firstFlight = nextNode;
+						}
+						
+						changed = true;
+						
+					}else{
+						currentNode = currentNode.getNextFlight();
+					}
+				}				
+			}
+		}
+	}
+	public void bubbleSortGate() {
+		if(firstFlight != null) {
+			
+			boolean changed = true;
+			while(changed) {
+				Flight currentNode = firstFlight;
+				changed = false;
+				//System.out.println("== NEW ITERATION A ==");
+				while(currentNode.getNextFlight() != null) {
+					Flight nextNode = currentNode.getNextFlight();
+					//System.out.println(currentNode+" ? "+nextNode);
+					Comparator<Flight> flightGateComparator = new FlightGateComparator();
+					if(flightGateComparator.compare(currentNode,nextNode)>0) {
+						if(currentNode.getPreviousFlight()!=null) {
+							currentNode.getPreviousFlight().setNextFlight(nextNode);
+						}
+						if(nextNode.getNextFlight()!=null) {
+							nextNode.getNextFlight().setPreviousFlight(currentNode);
+						}
+						
+						currentNode.setNextFlight(nextNode.getNextFlight());
+						nextNode.setPreviousFlight(currentNode.getPreviousFlight());
+						currentNode.setPreviousFlight(nextNode);
+						nextNode.setNextFlight(currentNode);
+						
+						
+						if(currentNode==firstFlight) {
+							firstFlight = nextNode;
+						}
+						
+						changed = true;
+						
+					}else{
+						currentNode = currentNode.getNextFlight();
+					}
+				}				
+			}
+		}
+	}
+	
+	@FXML
     void orderByDestiny(ActionEvent event) {
     	long timeInit=System.currentTimeMillis();
-    	//fligths.sortByDestiny();
+    	bubbleSortDestiny();
     	clearData();
     	showTable();
     	long timeFinal=System.currentTimeMillis()-timeInit;
@@ -141,7 +299,7 @@ public class FligthsController {
     @FXML
     void orderByFlight(ActionEvent event) {
     	long timeInit=System.currentTimeMillis();
-    	//fligths.sortByFlight();
+    	bubbleSortFlight();
     	clearData();
     	showTable(); 
     	long timeFinal=System.currentTimeMillis()-timeInit;
@@ -151,7 +309,7 @@ public class FligthsController {
     @FXML
     void orderByGate(ActionEvent event) {
     	long timeInit=System.currentTimeMillis();
-    	//fligths.sortByGate();
+    	bubbleSortGate();
     	clearData();
     	showTable();
     	long timeFinal=System.currentTimeMillis()-timeInit;
